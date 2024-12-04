@@ -19,11 +19,25 @@
             </p>
             <p>
                 <strong>Difficulty:</strong> 
-                <select id="difficultySelect">
-                    <option value="medium" selected>Medium (5x payout)</option>
-                    <option value="hard" >Hard (10x payout)</option>
-                    <option value="very-hard" >Very Hard (50x payout)</option>
-                </select>
+                <select id="difficultySelect" data-balance="<%= balance %>">
+    <option value="medium" selected>Medium (5x payout)</option>
+    <option value="hard">Hard (10x payout)</option>
+    <option value="very-hard">Very Hard (50x payout)</option>
+</select>
+
+        <script>
+            const df = document.getElementById('difficultySelect');
+            const balance = parseFloat( df.dataset.balance);
+
+            if (balance < 2000) {
+                // Disable the "hard" and "very-hard" options
+                df.querySelector('option[value="hard"]').disabled = true;
+            }
+            if (balance < 10000) {
+                df.querySelector('option[value="very-hard"]').disabled = true;
+            }
+        </script>
+                
             </p>
         </div>
 
