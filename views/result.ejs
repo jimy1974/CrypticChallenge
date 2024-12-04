@@ -1,0 +1,46 @@
+<!-- result.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clue Result</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <% if (isCorrect) { %>
+            <h1 class="success">Correct!</h1>
+            <p>You won <%= prizePool %> XLM!</p>
+        <% } else { %>
+            <h1 class="failure">Incorrect!</h1>
+        <% } %>
+        <p><strong>Correct Answer:</strong> <%= correctAnswer %></p>
+        <p><strong>Your Answer:</strong> <%= userAnswer %></p>
+        <p><strong>Explanation:</strong> <%= explanation %></p>
+
+        <div class="game-info">
+            <p>
+                <img src="/images/stellar.png" alt="Stellar Logo" style="width: 20px; vertical-align: middle;">
+                <strong>Balance:</strong> <%= balance %> XLM
+            </p>
+            <p><strong>Difficulty:</strong> <%= difficulty %></p>
+            <p><strong>Total Winnings:</strong> <%= gameState.totalWinnings %> XLM</p>
+        </div>
+
+        <div class="continue-section">
+            <% if (gameState.totalWinnings > 0) { %>
+                <p>You have accumulated <%= gameState.totalWinnings %> XLM in winnings.</p>
+                <form action="/withdraw" method="GET">
+                    <button type="submit" class="btn">Withdraw Winnings</button>
+                </form>
+            <% } else { %>
+                <p>Click continue to get your next challenge!</p>
+                <form action="/start" method="GET">
+                    <button type="submit" class="btn">Continue</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

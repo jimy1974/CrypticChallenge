@@ -1,0 +1,33 @@
+<!-- index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cryptic Clues Betting Game</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cryptic Clues Betting Game</h1>
+        <p>Solve cryptic puzzles and win money!</p>
+
+        <a href="/start" class="btn">Start Game</a>
+
+        <div class="wallet-info">
+            <h2>Wallet Information</h2>
+            <p>                
+                Total Wallet Balance: <%= balance %> XLM <img src="/images/stellar.png" alt="Stellar Logo" style="width: 20px; vertical-align: middle;">
+            </p>
+        </div>
+        
+        <div class="rules">
+            <h2>How to Play</h2>
+            <ul>
+                <li>Each clue costs 2 XLM to attempt</li>
+                <li>Correct answers win 10 XLM</li>            
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

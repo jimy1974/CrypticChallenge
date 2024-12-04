@@ -1,0 +1,22 @@
+<!-- withdrawal-success.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Withdrawal Successful</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Withdrawal Successful</h1>
+        <p>Your winnings have been sent to your wallet address:</p>
+        <p><strong><%= walletAddress %></strong></p>
+        <p>Amount: <strong><%= amount %> XLM</strong></p>
+
+        <form action="/start" method="GET">
+            <button type="submit" class="btn">Play Again</button>
+        </form>
+    </div>
+</body>
+</html>

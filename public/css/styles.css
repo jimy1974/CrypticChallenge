@@ -1,0 +1,122 @@
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f1020 0%, #1a2980 100%);
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);  /* Lighter, more opaque background */
+    color: #0f1020;  /* Dark text for contrast */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.btn {
+    background: linear-gradient(45deg, #4a00e0, #8e2de2);
+    color: white;
+    border: none;
+    transition: transform 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(142, 45, 226, 0.4);
+}
+
+.game-info {
+    background-color: rgba(26, 41, 128, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #8e2de2;
+    border-radius: 4px;
+    background-color: rgba(255,255,255,0.9);
+}
+
+.clue {
+    font-style: italic;
+    color: #bb0000;
+    font-weight: bold;
+}
+
+.success {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.failure {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.error {
+    color: #e74c3c;
+    text-align: center;
+}
+
+
+#loader {
+    font-size: 16px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#actionButton:disabled::after {
+    content: '...';
+    display: inline-block;
+    margin-left: 10px;
+    animation: spin 1s linear infinite;
+}
+.rules ul {
+    list-style-position: inside; /* Ensures bullets are aligned with text */
+    margin: 0 auto; /* Centers the list as a whole */
+    padding: 0; /* Removes default padding */
+    text-align: left; /* Aligns text to the left */
+    max-width: 400px; /* Optional: Limits the width of the list */
+}
+
+.rules ul li {
+    margin-bottom: 10px; /* Adds spacing between list items */
+    line-height: 1.6; /* Adjusts line height for readability */
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

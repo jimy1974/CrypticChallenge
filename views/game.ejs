@@ -1,0 +1,178 @@
+<!-- game.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cryptic Clues Challenge</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cryptic Clues Challenge</h1>
+        
+        <!-- Game Info -->
+        <div class="game-info">
+            <p>
+                <img src="/images/stellar.png" alt="Stellar Logo" style="width: 20px; vertical-align: middle;">
+                <strong>Wallet Balance:</strong> <%= balance %> XLM
+            </p>
+            <p>
+                <strong>Difficulty:</strong> 
+                <select id="difficultySelect">
+                    <option value="medium" selected>Medium (5x payout)</option>
+                    <option value="hard" >Hard (10x payout)</option>
+                    <option value="very-hard" >Very Hard (50x payout)</option>
+                </select>
+            </p>
+        </div>
+
+        <!-- Clue Section -->
+        <div class="clue-section">
+            <h2>Solve the Clue:</h2>
+            <p class="clue"><%= clue %></p>
+        </div>
+
+        <!-- Answer Form -->
+        <form id="paymentForm" action="/submit" method="POST">
+            <label for="userAnswer">Your Answer:</label>
+            <input type="text" id="userAnswer" name="userAnswer" placeholder="Your Answer" required>
+            <button type="button" id="actionButton" class="btn">Next</button>
+        </form>
+
+
+
+
+
+
+        <!-- Payment Instructions -->
+        <div id="paymentInstructions" style="display:none; word-wrap: break-word; overflow-wrap: break-word;">
+            <h3>Payment Instructions</h3>
+            <p><strong>Wallet Address:</strong> <span id="walletAddress"></span></p>
+            <p><strong>Memo:</strong> <span id="paymentMemo"></span></p>
+            <p>Send exactly 2 XLM to the wallet address above. Include the memo in your transaction to associate your payment with your message.</p>
+            <div id="paymentStatus" style="margin-top: 10px; color: green; display: none;">
+                Payment Confirmed!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        
+        const paymentInstructionsDiv = document.getElementById('paymentInstructions');
+        const paymentStatus = document.getElementById('paymentStatus');
+        const walletAddressSpan = document.getElementById('walletAddress');
+        const paymentMemoSpan = document.getElementById('paymentMemo');
+        const difficultySelect = document.getElementById('difficultySelect');
+
+        // Track the current button state
+        let actionState = 'next'; // Initial state
+
+        const actionButton = document.getElementById('actionButton');
+        const userAnswerInput = document.getElementById('userAnswer');
+
+        actionButton.addEventListener('click', async () => {
+        if (actionState === 'next') {
+            const userAnswer = userAnswerInput.value.trim();
+
+            if (!userAnswer) {
+                alert('Please enter your answer.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/generate-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userMessage: userAnswer })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate payment instructions.');
+                }
+
+                const data = await response.json();
+
+                walletAddressSpan.textContent = data.walletAddress;
+                paymentMemoSpan.textContent = data.memo;
+                paymentInstructionsDiv.style.display = 'block';
+
+                userAnswerInput.readOnly = true;
+                userAnswerInput.style.backgroundColor = '#f0f0f0';
+
+
+                actionState = 'checkPayment';
+                actionButton.textContent = 'Check Payment';
+            } catch (error) {
+                alert(error.message);
+            }
+        } else if (actionState === 'checkPayment') {
+            const memo = paymentMemoSpan.textContent;
+
+            try {
+                actionButton.textContent = 'Checking...';
+                actionButton.disabled = true;
+
+                const response = await fetch(`/confirm-payment?memo=${memo}`);
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    paymentStatus.style.display = 'block';
+                    paymentStatus.textContent = 'Payment Confirmed!';
+                    actionState = 'nextStage';
+                    actionButton.textContent = 'Next';
+                } else {
+                    paymentStatus.style.display = 'block';
+                    paymentStatus.textContent = 'Payment not found yet. Please try again in a moment.';
+                }
+            } catch (error) {
+                console.error('Error checking payment:', error);
+                alert('An error occurred while checking payment. Please try again.');
+            } finally {
+                actionButton.disabled = false;
+            }
+        } else if (actionState === 'nextStage') {
+            // Submit the form to '/submit'
+            document.getElementById('paymentForm').submit();
+        }
+
+
+      });
+
+
+
+
+       // Change Difficulty
+        difficultySelect.addEventListener('change', async () => {
+            const difficulty = difficultySelect.value;
+
+            // Show a loading message while fetching the new question
+            const clueElement = document.querySelector('.clue');
+            clueElement.textContent = "Loading new question...";
+
+            try {
+                // Fetch a new question and update the payout
+                const response = await fetch(`/change-difficulty?difficulty=${difficulty}`);
+                if (!response.ok) {
+                    clueElement.textContent = "Failed to load a new question. Please try again.";
+                    return;
+                }
+
+                const data = await response.json();
+
+                // Update the page with the new question and difficulty
+                clueElement.textContent = data.clue;
+                
+                // Optionally update other UI elements
+                console.log(`Difficulty changed to ${difficulty}. Payout is now ${data.payout} XLM.`);
+            } catch (error) {
+                // Handle errors gracefully
+                clueElement.textContent = "An error occurred. Please try again.";
+                console.error("Error loading new question:", error);
+            }
+        });
+
+    </script>
+</body>
+</html>

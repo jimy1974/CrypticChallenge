@@ -1,0 +1,32 @@
+<!-- withdraw.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Withdraw Winnings</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Withdraw Your Winnings</h1>
+        <p>You have <strong><%= totalWinnings %> XLM</strong> available for withdrawal.</p>
+
+        <!-- Existing content -->
+        <form action="/process-withdrawal" method="POST">
+            <label for="walletAddress">Your Stellar wallet address:</label>
+            <input type="text" id="walletAddress" name="walletAddress" value="<%= defaultAddress %>" required>
+
+            <!-- withdraw.ejs -->
+
+<!-- Existing content -->
+<p>We have detected the wallet address you used to send the payment. You can withdraw your winnings to this address or enter a different one.</p>
+
+            
+            <button type="submit" class="btn">Confirm Withdrawal</button>
+        </form>
+        
+        
+    </div>
+</body>
+</html>
